@@ -1,0 +1,14 @@
+#root {
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem;
+  text-align: center;
+}
+
+li {
+  list-style-type: none;
+}
+
+.icon:hover {
+  transform: scale(1.2);
+}
