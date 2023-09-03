@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import {BsTrash} from 'react-icons/bs'
-import {ImCheckmark2} from 'react-icons/IM'
+import {ImCheckmark2} from 'react-icons/im'
 
 function ListItem(props) {
     
