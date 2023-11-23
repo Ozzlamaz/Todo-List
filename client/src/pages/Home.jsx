@@ -15,7 +15,7 @@ function Home() {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await fetch('/api/tasks',{
+                const response = await fetch('https://todo-list-api-lakr.onrender.com/api/tasks',{
                     headers: {
                         'Authorization': `Bearer ${user.token}`
                     }
@@ -39,7 +39,7 @@ function Home() {
         <div className="row">
             <div className="col-8">
                 <h3>Tasks</h3>
-                {tasks.length !== 0 ?
+                {tasks && tasks?.length !== 0 ?
                 <>
                     {tasks.map((task) => {
                         return <TaskDetails key={task._id} task={task}/>

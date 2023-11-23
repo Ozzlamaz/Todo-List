@@ -9,7 +9,7 @@ function useSignup() {
 
     const signup = async (userName, email, password) => {
         setLoading(true)
-        const response = await fetch('/api/user/signup', {
+        const response = await fetch('https://todo-list-api-lakr.onrender.com/api/user/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
