@@ -9,7 +9,7 @@ import TaskDetails from "../components/TaskDetails"
 
 function Home() {
 
-    const {user} = useUserContext();
+    const {user, dispatch: userDispatch} = useUserContext();
     const {tasks, dispatch} = useTasksContext();
 
     useEffect(() => {
@@ -24,8 +24,11 @@ function Home() {
                     const data = await response.json()
                     dispatch({type: 'SET_TASKS', payload: data})
                 }
+                if(response.status === 401) {
+                    throw Error ('Unauthorized')
+                }
             } catch (error) {
-                console.log(error)
+                userDispatch({type: 'LOGOUT'})
             }
         }
         fetchTasks()
@@ -38,7 +41,7 @@ function Home() {
                 <h3>Tasks</h3>
                 {tasks.length !== 0 ?
                 <>
-                    {tasks && tasks.map((task) => {
+                    {tasks.map((task) => {
                         return <TaskDetails key={task._id} task={task}/>
                     })
                     }
