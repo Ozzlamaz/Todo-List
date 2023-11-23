@@ -17,7 +17,7 @@ function AddTask() {
         const task = {title, color, completed: false}
 
         try {
-            const response = await fetch('/api/tasks', {
+            const response = await fetch('https://todo-list-api-lakr.onrender.com/api/tasks', {
                 method: 'POST',
                 body: JSON.stringify(task),
                 headers: {
@@ -38,6 +38,7 @@ function AddTask() {
                 setColor('bg-success')
                 setError(null)
             }
+            
         } catch (error) {
             console.log(error)
         }

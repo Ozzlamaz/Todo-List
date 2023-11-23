@@ -15,6 +15,7 @@ function TaskDetails({task}) {
   const { user } = useUserContext()
   const {dispatch} = useTasksContext();
   const {_id, title, color, completed, createdAt, updatedAt} = task;
+
   const [editMode, setEditMode] = useState(false);
   const [text, setText] = useState(title)
 
@@ -39,10 +40,11 @@ function TaskDetails({task}) {
   }
 
   const handleCompleted = async() => {
+
     try {
-     const response = await fetch(`/api/tasks/${_id}`, {
+     const response = await fetch(`https://todo-list-api-lakr.onrender.com/api/tasks/${_id}`, {
        method: 'PATCH',
-       body: JSON.stringify({...task, completed: !completed}),
+       body: JSON.stringify({ completed: !completed}),
        headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${user.token}`
@@ -52,19 +54,19 @@ function TaskDetails({task}) {
      const data = await response.json();
 
      if(response.ok) {
-       dispatch({type: 'UPDATE_TASK', payload: {...data, completed: !completed}})
+        dispatch({type: 'UPDATE_TASK', payload: {...data, completed: !completed}})
      }
 
     } catch (error) {
-     console.log(error)
+      console.log(error)
     }
  }
 
  const handleUpdate = async() => {
   try {
-   const response = await fetch(`/api/tasks/${_id}`, {
+   const response = await fetch(`https://todo-list-api-lakr.onrender.com/api/tasks/${_id}`, {
      method: 'PATCH',
-     body: JSON.stringify({...task, title: text}),
+     body: JSON.stringify({title: text}),
      headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${user.token}`
@@ -103,7 +105,7 @@ function TaskDetails({task}) {
             {!completed ?
             <LiaCheckSquareSolid 
               className={'btn btn-light text-dark p-1 ' + (editMode && 'invisible')} 
-              style={{fontSize: '1.75rem'}} 
+              style={{fontSize: '1.75rem'}}
               role='button'
               onClick={handleCompleted}
             />
@@ -116,12 +118,21 @@ function TaskDetails({task}) {
             />
             }
 
-            {editMode ? 
-            <button 
-              className='btn btn-light rounded'
-              onClick={handleUpdate}
-              >save
-            </button>
+            {editMode ?
+            <div>
+              <button 
+                className='btn btn-light rounded'
+                onClick={handleUpdate}
+              >
+                Save
+              </button>
+              <button 
+                className='btn btn-light rounded'
+                onClick={() => setEditMode(false)}
+              >
+                Cancel
+              </button>
+            </div>
             :
             <FiEdit 
               className='btn btn-light text-dark p-1' 
