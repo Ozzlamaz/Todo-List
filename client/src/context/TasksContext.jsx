@@ -25,7 +25,7 @@ export const tasksReducer = (state, action) => {
 
 function TasksContextProvider({children}) {
 
-    const [state, dispatch] = useReducer(tasksReducer, {tasks: []})
+    const [state, dispatch] = useReducer(tasksReducer, {tasks: null})
 
   return (
     <TasksContext.Provider value={{...state, dispatch}}>
