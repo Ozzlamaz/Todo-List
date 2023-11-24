@@ -39,12 +39,19 @@ function TaskDetails({task}) {
      }
   }
 
-  const handleCompleted = async() => {
+  const handleUpdate = async(taskProp) => {
+    let body
+    if(taskProp === 'COMPLETED') {
+      body = {completed: !completed}
+    }
+    if(taskProp === 'TEXT') {
+      body = {title: text}
+    }
 
     try {
      const response = await fetch(`https://todo-list-api-lakr.onrender.com/api/tasks/${_id}`, {
        method: 'PATCH',
-       body: JSON.stringify({ completed: !completed}),
+       body: JSON.stringify(body),
        headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${user.token}`
@@ -52,9 +59,11 @@ function TaskDetails({task}) {
      })
 
      const data = await response.json();
+     console.log(data)
 
      if(response.ok) {
-        dispatch({type: 'UPDATE_TASK', payload: {...data, completed: !completed}})
+        dispatch({type: 'UPDATE_TASK', payload: {...data, ...body}})
+        setEditMode(false)
      }
 
     } catch (error) {
@@ -62,94 +71,71 @@ function TaskDetails({task}) {
     }
  }
 
- const handleUpdate = async() => {
-  try {
-   const response = await fetch(`https://todo-list-api-lakr.onrender.com/api/tasks/${_id}`, {
-     method: 'PATCH',
-     body: JSON.stringify({title: text}),
-     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${user.token}`
-  }
-   })
-
-   const data = await response.json();
-
-   if(response.ok) {
-     dispatch({type: 'UPDATE_TASK', payload: {...data, title: text }})
-     setEditMode(false)
-   }
-
-  } catch (error) {
-   console.log(error)
-  }
-}
-
-    return (
-        <div className={'p-3 rounded mb-4 position-relative ' + (completed ? 'bg-secondary' : color)}>
-          {editMode ? 
-          <div>
-            <textarea 
-              value={text} 
-              onChange={(e) => setText(e.target.value)} 
-              className={'w-100 rounded'}>
-            </textarea>
-          </div>
-          : 
-          <h4 className='bg-light text-dark p-1 rounded d-inline-block'>{completed ? <del>{title}</del> : title}</h4>
-          }
-          <p className='mb-0' style={{fontSize: '0.75rem'}}>Added: {formatDistanceToNow(new Date(createdAt), {addSuffix: true})}</p>
-          <p className='mb-0' style={{fontSize: '0.75rem'}}>Last Updated: {formatDistanceToNow(new Date(updatedAt), {addSuffix: true})}</p>
-          <div className='position-absolute end-0 btn-group' role='group'>
-
-            {!completed ?
-            <LiaCheckSquareSolid 
-              className={'btn btn-light text-dark p-1 ' + (editMode && 'invisible')} 
-              style={{fontSize: '1.75rem'}}
-              role='button'
-              onClick={handleCompleted}
-            />
-            :
-            <BiRefresh
-              className={'btn btn-light text-dark p-1 ' + (editMode && 'invisible')} 
-              style={{fontSize: '1.75rem'}} 
-              role='button'
-              onClick={handleCompleted}
-            />
-            }
-
-            {editMode ?
-            <div>
-              <button 
-                className='btn btn-light rounded'
-                onClick={handleUpdate}
-              >
-                Save
-              </button>
-              <button 
-                className='btn btn-light rounded'
-                onClick={() => setEditMode(false)}
-              >
-                Cancel
-              </button>
-            </div>
-            :
-            <FiEdit 
-              className='btn btn-light text-dark p-1' 
-              style={{fontSize: '1.75rem'}} 
-              role='button'
-              onClick={() => setEditMode(true)}
-            />
-            }
-
-            <BsTrash 
-              className={'btn btn-light text-dark p-1 ' + (editMode && 'invisible')} 
-              style={{fontSize: '1.75rem'}} 
-              role='button'
-              onClick={handleDelete}
-            />
-          </div>
+  return (
+      <div className={'p-3 rounded mb-4 position-relative ' + (completed ? 'bg-secondary' : color)}>
+        {editMode ? 
+        <div>
+          <textarea 
+            value={text} 
+            onChange={(e) => setText(e.target.value)} 
+            className={'w-100 rounded'}>
+          </textarea>
         </div>
-    )
+        : 
+        <h4 className='bg-light text-dark p-1 rounded d-inline-block'>{completed ? <del>{title}</del> : title}</h4>
+        }
+        <p className='mb-0' style={{fontSize: '0.75rem'}}>Added: {formatDistanceToNow(new Date(createdAt), {addSuffix: true})}</p>
+        <p className='mb-0' style={{fontSize: '0.75rem'}}>Last Updated: {formatDistanceToNow(new Date(updatedAt), {addSuffix: true})}</p>
+        <div className='position-absolute end-0 btn-group' role='group'>
+
+          {!completed ?
+          <LiaCheckSquareSolid 
+            className={'btn btn-light text-dark p-1 ' + (editMode && 'invisible')} 
+            style={{fontSize: '1.75rem'}}
+            role='button'
+            onClick={() => handleUpdate('COMPLETED')}
+          />
+          :
+          <BiRefresh
+            className={'btn btn-light text-dark p-1 ' + (editMode && 'invisible')} 
+            style={{fontSize: '1.75rem'}} 
+            role='button'
+            onClick={() => handleUpdate('COMPLETED')}
+          />
+          }
+
+          {editMode ?
+          <div>
+            <button 
+              className='btn btn-light rounded'
+              onClick={() => handleUpdate('TEXT')}
+            >
+              Save
+            </button>
+            <button 
+              className='btn btn-light rounded'
+              onClick={() => setEditMode(false)}
+            >
+              Cancel
+            </button>
+          </div>
+          :
+          <FiEdit 
+            className='btn btn-light text-dark p-1' 
+            style={{fontSize: '1.75rem'}} 
+            role='button'
+            onClick={() => setEditMode(true)}
+          />
+          }
+
+          <BsTrash 
+            className={'btn btn-light text-dark p-1 ' + (editMode && 'invisible')} 
+            style={{fontSize: '1.75rem'}} 
+            role='button'
+            onClick={handleDelete}
+          />
+        </div>
+      </div>
+  )
 }
 export default TaskDetails
