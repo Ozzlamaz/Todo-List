@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import useGetTasks from "../hooks/useGetTasks"
 //components
 import AddTask from "../components/AddTask"
 import TaskDetails from "../components/TaskDetails"
@@ -12,25 +13,7 @@ function Home() {
     const {tasks, loading, error, getTasks} = useGetTasks()
 
     useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                const response = await fetch('https://todo-list-api-lakr.onrender.com/api/tasks',{
-                    headers: {
-                        'Authorization': `Bearer ${user.token}`
-                    }
-                })
-                if(response.ok) {
-                    const data = await response.json()
-                    dispatch({type: 'SET_TASKS', payload: data})
-                }
-                if(response.status === 401) {
-                    throw Error ('Unauthorized')
-                }
-            } catch (error) {
-                userDispatch({type: 'LOGOUT'})
-            }
-        }
-        fetchTasks()
+        getTasks()
     },[]);
 
     if (loading) {

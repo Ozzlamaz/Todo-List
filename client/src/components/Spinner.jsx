@@ -1,6 +1,6 @@
-function Spinner() {
+function Spinner({size}) {
   return (
-    <div className="spinner-border" role="status">
+    <div style={size} className="spinner-border" role="status">
         <span className="visually-hidden">Loading...</span>
     </div>
   )

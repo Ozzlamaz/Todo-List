@@ -3,7 +3,7 @@ import useUserContext from "./useUserContext"
 import useTasksContext from "./useTasksContext"
 
 const useGetTasks = () => {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const {user, dispatch: userDispatch} = useUserContext();
     const {tasks, dispatch: taskDispatch} = useTasksContext();
