@@ -1,7 +1,7 @@
 import { useState } from "react"
 import useLogin from "../hooks/useLogin"
 // components
-import Spinner from "../components/spinner"
+import Spinner from "../components/Spinner"
 
 function Login() {
   

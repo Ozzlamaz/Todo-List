@@ -4,32 +4,40 @@ import useTasksContext from "./useTasksContext"
 
 const useGetTasks = () => {
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
     const {user, dispatch: userDispatch} = useUserContext();
     const {tasks, dispatch: taskDispatch} = useTasksContext();
 
     const getTasks = async () => {
         setLoading(true)
-        try {
-            const response = await fetch('https://todo-list-api-lakr.onrender.com/api/tasks',{
-                headers: {
-                    'Authorization': `Bearer ${user.token}`
-                }
-            })
-            if(response.ok) {
-                setLoading(false)
-                const data = await response.json()
-                taskDispatch({type: 'SET_TASKS', payload: data})
+
+        const response = await fetch('https://todo-list-api-lakr.onrender.com/api/tasks',{
+            headers: {
+                'Authorization': `Bearer ${user.token}`
             }
-            if(response.status === 401) {
-                throw Error ('Unauthorized')
-            }
-        } catch (error) {
+        })
+        
+        const data = await response.json()
+
+
+        if(response.status === 401) {
             setLoading(false)
             userDispatch({type: 'LOGOUT'})
         }
+
+        if(!response.ok) {
+            setLoading(false)
+            setError(data.error)
+        }
+
+        if(response.ok) {
+            setLoading(false)
+            setError(false)
+            taskDispatch({type: 'SET_TASKS', payload: data})
+        }
     }
 
-    return {tasks, loading, getTasks}
+    return {tasks, loading, error, getTasks}
 }
 
 export default useGetTasks
