@@ -1,16 +1,15 @@
 import { useEffect } from "react"
-import useTasksContext from "../hooks/useTasksContext"
-import useUserContext from "../hooks/useUserContext"
 //components
 import AddTask from "../components/AddTask"
 import TaskDetails from "../components/TaskDetails"
+import Spinner from '../components/Spinner'
+import ErrorPage from "./ErrorPage"
 
 
 
 function Home() {
 
-    const {user, dispatch: userDispatch} = useUserContext();
-    const {tasks, dispatch} = useTasksContext();
+    const {tasks, loading, error, getTasks} = useGetTasks()
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -34,29 +33,45 @@ function Home() {
         fetchTasks()
     },[]);
 
-  return (
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center">
+                <Spinner size={{width: '10rem', height: '10rem', fontSize: '3rem'}} />
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <ErrorPage error={error}/>
+        )
+    }
+
+    return (
     <div className="home page container">
         <div className="row">
-            <div className="col-8">
+            <div className="col-12 col-md-4">
+                <AddTask />
+            </div>
+            <div className="col-12 col-md-8">
                 <h3>Tasks</h3>
-                {tasks && tasks?.length !== 0 ?
-                <>
+                {tasks.length === 0 ?
+                <div className="d-flex justify-content-center align-items-center h-100">
+                    <h4 className="m-auto">You Currently have no tasks</h4>
+                </div>
+                :
+                <div>
                     {tasks.map((task) => {
                         return <TaskDetails key={task._id} task={task}/>
                     })
                     }
-                </>
-                :
-                <div className="d-flex justify-content-center align-items-center h-100">
-                    <h4 className="m-auto">You Currently have no tasks</h4>
                 </div>
                 }
             </div>
-            <div className="col-4">
-                <AddTask />
-            </div>
         </div>
     </div>
-  )
+    )
 }
+
+    
 export default Home
