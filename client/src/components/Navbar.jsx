@@ -14,7 +14,10 @@ function Navbar() {
         </Link>
         <nav>
           {user ?
+          <div className='d-flex'>
+          <h4 className='me-3'>You are currently logged in as, {user.userName}</h4>
           <button type='button' className='btn btn-dark' onClick={logout}>Logout</button>
+          </div>
           :
           <>
             <Link to='/login' role='button' className='btn btn-dark me-1'>Login</Link>

@@ -40,7 +40,7 @@ function Home() {
                 <h3>Tasks</h3>
                 {tasks.length === 0 ?
                 <div className="d-flex justify-content-center align-items-center h-100">
-                    <h4 className="m-auto">You Currently have no tasks</h4>
+                    <h4 className="m-auto">You currently have no tasks</h4>
                 </div>
                 :
                 <div>
