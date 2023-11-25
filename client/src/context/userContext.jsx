@@ -9,16 +9,11 @@ export const userReducer = (state, action) => {
   }
 }
 
+const user = JSON.parse(localStorage.getItem('user'))
+
 function UserContextProvider({children}) {
 
-    const [state, dispatch] = useReducer(userReducer, {user: null})
-
-    useEffect(() => {
-      const user = localStorage.getItem('user')
-      if (user) {
-        dispatch({type: 'LOGIN', payload: JSON.parse(user)})
-      }
-    },[])
+  const [state, dispatch] = useReducer(userReducer, {user: user || null})
 
   return (
     <UserContext.Provider value={{...state, dispatch}}>
