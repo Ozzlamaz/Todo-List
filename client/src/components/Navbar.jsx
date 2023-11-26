@@ -15,7 +15,7 @@ function Navbar() {
         <nav>
           {user ?
           <div className='d-flex align-items-center'>
-            <p5 className='me-3'>hello, <strong>{user.userName}</strong></p5>
+            <p className='mb-0 me-3'>hello, <strong>{user.userName}</strong></p>
             <button type='button' className='btn btn-dark' onClick={logout}>Logout</button>
           </div>
           :
