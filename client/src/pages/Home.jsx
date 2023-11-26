@@ -33,7 +33,7 @@ function Home() {
     return (
     <div className="home page container">
         <div className="row">
-            <div className="col-12 col-md-4">
+            <div className="col-12 col-md-4 mb-3">
                 <AddTask />
             </div>
             <div className="col-12 col-md-8">
