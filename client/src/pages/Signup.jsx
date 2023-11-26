@@ -20,7 +20,7 @@ function Signup() {
             style={{maxWidth: '24.5rem'}}
             onSubmit={handleSubmit}
         >
-            <h3 className="text-center">Login</h3>
+            <h3 className="text-center">Signup</h3>
 
             <label htmlFor="user-name">User:</label>
             <input
