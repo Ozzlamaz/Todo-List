@@ -21,7 +21,7 @@ function TaskDetails({task}) {
 
   const handleDelete = async() => {
      try {
-      const response = await fetch(`/api/tasks/${_id}`, {
+      const response = await fetch(`https://todo-list-api-lakr.onrender.com/api/tasks/${_id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${user.token}`
